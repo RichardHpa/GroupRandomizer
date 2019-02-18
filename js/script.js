@@ -1,4 +1,4 @@
-var starting = ['Andy', 'Liam', 'John', 'Vikesh', 'Brayden', 'Simon', 'Ryley', 'Matt', 'Larissa', 'Katherine', 'Ruby', 'Sophie', 'Emma', 'Yana', 'Annie', 'Antonia'];
+var starting = ['Andy', 'Liam', 'John', 'Brayden', 'Simon', 'Ryley', 'Matt', 'Larissa', 'Katherine', 'Ruby', 'Sophie', 'Emma', 'Yana', 'Annie', 'Antonia'];
 
 var maxNumberInGroup = 3;
 var people = [];
@@ -6,7 +6,8 @@ var remainingStudents = [];
 var groups = [];
 var maxNumberOfGroups = Math.ceil(starting.length / maxNumberInGroup);
 var numberOfGroupsCreated = 0;
-
+var shuffledStudents;
+var currentGroupNum = 1;
 
 $(document).ready(function(){
     for (var i = 0; i < starting.length; i++) {
@@ -16,13 +17,24 @@ $(document).ready(function(){
         })
     };
     remainingStudents = people;
+    shuffle(remainingStudents);
+    shuffledStudents = shuffle(remainingStudents.slice());
+    var slot = '<ul class="slot">';
+        for (var i = 0; i < shuffledStudents.length; i++) {
+            slot += '<li data-name="'+shuffledStudents[i].name+'">'+shuffledStudents[i].name+'</li>';
+        }
+    slot += '</ul>';
+
+    for (var i = 0; i < maxNumberInGroup; i++) {
+
+        $("#slot").append(slot);
+    }
 });
 console.log(maxNumberOfGroups);
 
 
 $("#randomize").click(function(){
-    shuffle(remainingStudents);
-    var shuffledStudents = shuffle(remainingStudents.slice());
+
     if(people.length % maxNumberOfGroups === 0){
         var numberPerGroup = people.length/maxNumberOfGroups;
         var j = 0;
@@ -54,7 +66,25 @@ $("#randomize").click(function(){
             }
         }
     }
+    console.log(groups);
 });
+
+$("#group").click(function(){
+    if(currentGroupNum > maxNumberOfGroups){
+        alert("restarting groups");
+        currentGroupNum = 1;
+        console.clear();
+        console.log(groups);
+        return;
+    }
+
+    var currentGroup = groups['group'+currentGroupNum];
+    var lists = $('.slot');
+    lists.each(function(i){
+        $(this).find('li[data-name="'+currentGroup[i].name+'"]').addClass('grouped');
+    })
+    currentGroupNum++;
+})
 
 var shuffle = function (array) {
 	var currentIndex = array.length;
