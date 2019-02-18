@@ -1,13 +1,12 @@
 var starting = ['Andy', 'Liam', 'John', 'Vikesh', 'Brayden', 'Simon', 'Ryley', 'Matt', 'Larissa', 'Katherine', 'Ruby', 'Sophie', 'Emma', 'Yana', 'Annie', 'Antonia'];
-// var starting = ['Andy', 'Liam', 'John', 'Vikesh', 'Brayden', 'Simon'];
 
-var chosenNumbers = [];
-var numberInGroup = 4;
+var maxNumberInGroup = 4;
 var people = [];
 var remainingStudents = [];
 var groups = [];
-var maxNumberOfGroups = Math.ceil(starting.length / numberInGroup);
+var maxNumberOfGroups = Math.ceil(starting.length / maxNumberInGroup);
 var numberOfGroupsCreated = 0;
+
 
 $(document).ready(function(){
     for (var i = 0; i < starting.length; i++) {
@@ -15,54 +14,68 @@ $(document).ready(function(){
             id: i+1,
             name: starting[i]
         })
-    }
+    };
     remainingStudents = people;
-    $("#peopleNum").text(people.length);
-    $("#groupNum").text(maxNumberOfGroups);
-    console.log(people);
 });
+console.log(maxNumberOfGroups);
 
 
 $("#randomize").click(function(){
-    if(maxNumberOfGroups === numberOfGroupsCreated){
-        console.log("No more Students to Sort")
-        return;
-    }
-    var groupNum = numberOfGroupsCreated + 1;
-    groups['group'+groupNum] = [];
-    for (var i = 0; i < numberInGroup; i++) {
-        if(chosenNumbers === people.lenth){
-            console.log("No more Students to Sort")
-            break;
-        }
-        var randomNumber = Math.floor(Math.random() * people.length) + 1;
-        checkArray(randomNumber, groupNum)
-    }
-    $("#groups").append("<li>Group "+groupNum+"</li>");
+    if(people.length % maxNumberOfGroups === 0){
+        console.log('even');
 
-    numberOfGroupsCreated++;
+
+
+
+
+
+
+
+
+        shuffle(remainingStudents);
+        var shuffledStudents = shuffle(remainingStudents.slice());
+        console.log(shuffledStudents);
+        var numberPerGroup = people.length/maxNumberOfGroups;
+        console.log(numberPerGroup);
+        var j = 0;
+        // groups['group1'] = [];
+        for (var i = 0; i < shuffledStudents.length; i++) {
+            if(i % numberPerGroup === 0){
+                j++
+                groups['group'+(j)] = [];
+            }
+            console.log('group'+j);
+            groups['group'+j].push({
+                name: shuffledStudents[i].name
+            })
+        }
+        console.log(groups);
+
+
+
+
+
+
+
+
+
+
+
+    } else {
+        var evenGroups = false;
+        console.log('odd');
+    }
 });
 
-function checkArray(num, groupNum){
-
-    // if(remainingStudents[remainingStudents.findIndex(x => x.id === num)]){
-    //     var int = remainingStudents.findIndex(x => x.id === num);
-    //     console.log(int);
-    //     remainingStudents[int] = null;
-    //     console.log(remainingStudents);
-    //     // console.log(remainingStudents[remainingStudents.findIndex(x => x.id === num)]);
-    // } else {
-    //
-    // }
-
-    // if(jQuery.inArray(num, chosenNumbers) != -1) {
-    //     var randomNumber = Math.floor(Math.random() * people.length) + 1;
-    //     checkArray(randomNumber, groupNum);
-    // } else {
-    //     chosenNumbers.push(num, groupNum);
-    //     console.log(people[people.findIndex(x => x.id === num)]);
-    //     // groups['group'+groupNum].push({
-    //     //     name: people[people.findIndex(x => x.id === num)]
-    //     // })
-    // }
-}
+var shuffle = function (array) {
+	var currentIndex = array.length;
+	var temporaryValue, randomIndex;
+	while (0 !== currentIndex) {
+		randomIndex = Math.floor(Math.random() * currentIndex);
+		currentIndex -= 1;
+		temporaryValue = array[currentIndex];
+		array[currentIndex] = array[randomIndex];
+		array[randomIndex] = temporaryValue;
+	}
+	return array;
+};
