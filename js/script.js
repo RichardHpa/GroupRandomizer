@@ -2,7 +2,6 @@ var starting = ['Andy', 'Liam', 'John', 'Brayden', 'Simon', 'Ryley', 'Matt', 'La
 
 var maxNumberInGroup = 3;
 var people = [];
-var remainingStudents = [];
 var groups = [];
 var maxNumberOfGroups = Math.ceil(starting.length / maxNumberInGroup);
 var numberOfGroupsCreated = 0;
@@ -16,25 +15,13 @@ $(document).ready(function(){
             name: starting[i]
         })
     };
-    remainingStudents = people;
-    shuffle(remainingStudents);
-    shuffledStudents = shuffle(remainingStudents.slice());
-    var slot = '<ul class="slot">';
-        for (var i = 0; i < shuffledStudents.length; i++) {
-            slot += '<li data-name="'+shuffledStudents[i].name+'">'+shuffledStudents[i].name+'</li>';
-        }
-    slot += '</ul>';
+    // createList();
 
-    for (var i = 0; i < maxNumberInGroup; i++) {
 
-        $("#slot").append(slot);
-    }
 });
 console.log(maxNumberOfGroups);
 
-
-$("#randomize").click(function(){
-
+function randomize(){
     if(people.length % maxNumberOfGroups === 0){
         var numberPerGroup = people.length/maxNumberOfGroups;
         var j = 0;
@@ -67,11 +54,33 @@ $("#randomize").click(function(){
         }
     }
     console.log(groups);
-});
+}
+
+function createList(){
+    $(".slot").remove();
+    shuffle(people);
+    shuffledStudents = shuffle(people.slice());
+    var slot = '<ul class="slot">';
+        for (var i = 0; i < people.length; i++) {
+            slot += '<li data-name="'+people[i].name+'">'+people[i].name+'</li>';
+        }
+    slot += '</ul>';
+
+    for (var i = 0; i < maxNumberInGroup; i++) {
+        $("#slot").append(slot);
+    }
+};
 
 $("#group").click(function(){
+
+    if(currentGroupNum == 1){
+        createList();
+        randomize();
+    }
+
     if(currentGroupNum > maxNumberOfGroups){
         alert("restarting groups");
+        $("li").removeClass('grouped');
         currentGroupNum = 1;
         console.clear();
         console.log(groups);
