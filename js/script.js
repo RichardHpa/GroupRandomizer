@@ -75,8 +75,13 @@ $("#startGroup").click(function(){
         $("#groupOutcomes").empty();
         randomize();
         makeLists();
-
     }
+    if(currentGroupNum > 0){
+        for (var i = 0; i < groups['group'+currentGroupNum].length; i++) {
+            $("li[data-name='"+groups['group'+currentGroupNum][i].name+"']").remove();
+        }
+    }
+
     $(".blank").remove();
     $("#stopSpin").show().text("Wait...").attr('disabled', 'disabled');
     $("#startGroup").hide();
