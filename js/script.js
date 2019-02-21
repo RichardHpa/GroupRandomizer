@@ -78,7 +78,7 @@ $("#startGroup").click(function(){
 
     }
     $(".blank").remove();
-    $("#stopSpin").show().text("Wait...");
+    $("#stopSpin").show().text("Wait...").attr('disabled', 'disabled');
     $("#startGroup").hide();
     currentGroupNum++;
     if(groups['group'+currentGroupNum].length !== maxNumberInGroup){
@@ -100,7 +100,7 @@ $("#startGroup").click(function(){
                 startSpin(thisElement, spinSpeeds[i]);
             }, spinSpeeds[i])
             if(i == (maxNumberInGroup - 1)){
-                $("#stopSpin").text("Stop");
+                $("#stopSpin").text("Stop").removeAttr('disabled');
             }
         }, 1000 * i)
     });
@@ -115,7 +115,7 @@ $("#stopSpin").click(function(){
 function slowDown(i){
     var x = 0;
     var intervalID = setInterval(function () {
-       if (++x === 3) {
+       if (++x === 2) {
            window.clearInterval(intervalID);
        }
     }, 1000);
@@ -145,7 +145,8 @@ function stopSpin(el, i){
                 for (var k = 0; k < groups['group'+currentGroupNum].length; k++) {
                     outcomes += '<li>'+groups['group'+currentGroupNum][k].name+'</li>'
                 }
-                $("#groupOutcomes").append("<ul style='width: "+groupedListWidth+"%;'>"+outcomes+"</ul>");
+                // $("#groupOutcomes").append("<ul style='width: "+groupedListWidth+"%;' class='hidden'>"+outcomes+"</ul>");
+                $("<ul style='width: "+groupedListWidth+"%;' class='hidden'>"+outcomes+"</ul>").appendTo("#groupOutcomes").fadeIn(1000);
                 if(currentGroupNum == maxNumberOfGroups){
                     $("#startGroup").text('Start Again');
                 }
