@@ -77,6 +77,30 @@ h1 {
     border-color: #0abde3;
 }
 
+
+#groupOutcomes{
+    min-height: 300px;
+}
+#groupOutcomes ul{
+    list-style: none;
+    border: 1px solid white;
+    float: left;
+    padding: 0;
+}
+
+#groupOutcomes ul li{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+#groupOutcomes ul li.heading{
+    text-decoration: underline;
+    font-weight: bold;
+    border-bottom: 1px solid white;
+}
+
+
 #stopSpin{
     display: none;
 }

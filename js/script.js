@@ -8,6 +8,7 @@ var currentGroupNum = 0;
 var slideHeight, slideWidth;
 var ready = false;
 var containerWidth = $("#slotContainer").width();
+var groupedListWidth = 100/maxNumberOfGroups;
 
 for (var i = 0; i < starting.length; i++) {
     people.push({
@@ -95,6 +96,7 @@ $("#startGroup").click(function(){
 
 $("#stopSpin").click(function(){
     $("#stopSpin").hide();
+    $("#startGroup").show().attr('disabled', 'disabled').text('...sorting');
     slowDown(currentSlot);
 })
 
@@ -110,7 +112,7 @@ function slowDown(i){
         clearInterval(myInterval[i]);
         var stoppingSlide = $(".slot").eq(i);
         stopSpin(stoppingSlide, i);
-    }, 3000)
+    }, 2000)
 }
 
 function stopSpin(el, i){
@@ -126,7 +128,15 @@ function stopSpin(el, i){
                 slowDown(i+1)
             }
             if((i+1) == maxNumberInGroup){
-                $("#startGroup").show();
+
+                $("#startGroup").removeAttr("disabled").text('Make Next Group');
+                var outcomes = '<li class="heading">Group '+currentGroupNum+'</li>';
+                console.log(groups['group'+currentGroupNum]);
+                for (var k = 0; k < groups['group'+currentGroupNum].length; k++) {
+                    outcomes += '<li>'+groups['group'+currentGroupNum][k].name+'</li>'
+                }
+
+                $("#groupOutcomes").append("<ul style='width: "+groupedListWidth+"%;'>"+outcomes+"</ul>");
             }
         }
     })
