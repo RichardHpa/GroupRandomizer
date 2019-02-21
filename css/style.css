@@ -63,8 +63,6 @@ h1 {
     text-align: center;
     vertical-align: middle;
     color: #fff;
-
-
     padding: .5rem 1rem;
     font-size: 1.25rem;
     line-height: 1.5;
@@ -77,13 +75,16 @@ h1 {
     border-color: #0abde3;
 }
 
-
 #groupOutcomes{
     min-height: 300px;
 }
 #groupOutcomes ul{
+    min-height: 300px;
     list-style: none;
-    border: 1px solid white;
+    background: #8395a7;
+    color: white;
+    text-transform: uppercase;
+    border: 10px solid white;
     float: left;
     padding: 0;
 }

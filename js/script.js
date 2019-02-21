@@ -1,4 +1,5 @@
 var starting = ['Andy', 'Liam', 'John', 'Brayden', 'Simon', 'Ryley', 'Matt', 'Larissa', 'Katherine', 'Ruby', 'Sophie', 'Emma', 'Yana', 'Annie', 'Antonia'];
+// var starting = ['Andy', 'Liam', 'John'];
 
 var maxNumberInGroup = 3;
 var people = [], groups = [];
@@ -19,15 +20,29 @@ for (var i = 0; i < starting.length; i++) {
 slideWidth = 100 / maxNumberInGroup;
 
 var spinSpeeds = [];
-var matches =[];
 var sliders ;
-var slideTimeouts;
-var currentSlot = 0;
 var sliderOn = false;
 var myInterval = [];
 
 $(document).ready(function(){
+    makeLists();
+    if(currentGroupNum == 0){
+        randomize();
+    }
+    ready = true;
 
+
+    if(ready == true){
+        setTimeout(function(){
+            $(".lds-ring").fadeOut(800).remove();
+            $(".container").fadeIn(800);
+            $("#slotContainer").addClass('ready');
+        }, 1000)
+
+    }
+});
+
+function makeLists(){
     for (var j = 0; j < maxNumberInGroup; j++) {
         shuffle(people);
         shuffledStudents = shuffle(people.slice());
@@ -40,41 +55,35 @@ $(document).ready(function(){
             }
             list += '<li class="'+secondItem+'" data-name="'+shuffledStudents[i].name+'">'+shuffledStudents[i].name+'</li>';
         }
-        $("#slotContainer").append('<div class="slot" data-slot="'+j+'"><ul>'+list+'</ul></div>')
-    }
-    if(currentGroupNum == 0){
-        randomize();
+        $("#slotContainer").append('<div class="slot" data-slot="'+j+'"><ul>'+list+'</ul></div>');
     }
     $('.slot').css('width', slideWidth+'%');
-    ready = true;
-
-
     sliders = $('.slot');
     sliders.each(function(i, el){
         slideHeight = $(this).find('ul li').height();
         spinSpeeds[i] = 100;
     });
-
-    if(ready == true){
-        setTimeout(function(){
-            $(".lds-ring").fadeOut(800).remove();
-            $(".container").fadeIn(800);
-            $("#slotContainer").addClass('ready');
-        }, 1000)
-
-    }
-});
+}
 
 $("#startGroup").click(function(){
+    if(currentGroupNum == maxNumberOfGroups){
+        $("#startGroup").text('Make Groups');
+        currentGroupNum = 0;
+        spinSpeeds = [];
+        myInterval = [];
+        $("#slotContainer").empty();
+        $("#groupOutcomes").empty();
+        randomize();
+        makeLists();
+
+    }
     $(".blank").remove();
-    $("#stopSpin").show();
+    $("#stopSpin").show().text("Wait...");
     $("#startGroup").hide();
     currentGroupNum++;
     if(groups['group'+currentGroupNum].length !== maxNumberInGroup){
         for (var i = 0; i < maxNumberInGroup; i++) {
-            if(groups['group'+currentGroupNum][i]){
-                console.log(groups['group'+currentGroupNum][i].name)
-            } else {
+            if(!groups['group'+currentGroupNum][i]){
                 groups['group'+currentGroupNum].push({
                     name: ''
                 });
@@ -90,6 +99,9 @@ $("#startGroup").click(function(){
             myInterval[i] = setInterval(function(){
                 startSpin(thisElement, spinSpeeds[i]);
             }, spinSpeeds[i])
+            if(i == (maxNumberInGroup - 1)){
+                $("#stopSpin").text("Stop");
+            }
         }, 1000 * i)
     });
 })
@@ -97,7 +109,7 @@ $("#startGroup").click(function(){
 $("#stopSpin").click(function(){
     $("#stopSpin").hide();
     $("#startGroup").show().attr('disabled', 'disabled').text('...sorting');
-    slowDown(currentSlot);
+    slowDown(0);
 })
 
 function slowDown(i){
@@ -128,15 +140,15 @@ function stopSpin(el, i){
                 slowDown(i+1)
             }
             if((i+1) == maxNumberInGroup){
-
                 $("#startGroup").removeAttr("disabled").text('Make Next Group');
                 var outcomes = '<li class="heading">Group '+currentGroupNum+'</li>';
-                console.log(groups['group'+currentGroupNum]);
                 for (var k = 0; k < groups['group'+currentGroupNum].length; k++) {
                     outcomes += '<li>'+groups['group'+currentGroupNum][k].name+'</li>'
                 }
-
                 $("#groupOutcomes").append("<ul style='width: "+groupedListWidth+"%;'>"+outcomes+"</ul>");
+                if(currentGroupNum == maxNumberOfGroups){
+                    $("#startGroup").text('Start Again');
+                }
             }
         }
     })
@@ -180,7 +192,6 @@ function randomize(){
             })
         }
     } else {
-        // console.log(maxNumberOfGroups * maxNumberInGroup);
         var groupsRemaining = maxNumberOfGroups;
         for (var i = 1; i <= maxNumberOfGroups; i++) {
             groups['group'+(i)] = [];
@@ -195,7 +206,6 @@ function randomize(){
                 j=1;
             }
         }
-
     }
 }
 
