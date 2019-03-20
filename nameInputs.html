@@ -2,21 +2,49 @@
 <html lang="en" dir="ltr">
     <head>
         <meta charset="utf-8">
-        <title></title>
-<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">        <link rel="stylesheet" href="css/style.css">
+        <title>Random Group Slot Machine</title>
+
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
+        <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
         <div class="container textCenter">
-            <h1>Random Group Generator</h1>
-            <p>Input the list of items you want to group. Place each item on a new line.</p>
-            <form id="inputForm" method="post">
-                <textarea name="name" placeholder="Enter Names..."></textarea>
-                <button type="button" name="button" class="btn">Randomize</button>
-            </form>
+
+            <div id="loader">
+                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            </div>
+
+            <div id="inputList">
+                <h1>Random Group Slot Generator</h1>
+                <p>Input the list of items you want to group. Place each item on a new line.</p>
+                <form id="inputForm" method="post">
+                    <textarea id="names" name="name" placeholder="Enter Names..."></textarea>
+                    <div class="row">
+                        <div class="col6">
+                            <label class="inputContainer">Number of Groups
+                              <input type="radio" checked="checked" name="type" value="numGroup">
+                              <span class="checkmark"></span>
+                            </label>
+                            <label class="inputContainer">Max Number in Groups
+                              <input type="radio" name="type" value="maxNum">
+                              <span class="checkmark"></span>
+                            </label>
+                        </div>
+                        <div class="col6">
+                            <input id="numberValue" type="number" name="number" value="3" min="1">
+                        </div>
+                    </div>
+                    <button type="submit" name="button" class="btn">Randomize</button>
+                </form>
+            </div>
+
+            <!-- <div class="lds-ring"><div></div><div></div><div></div><div></div></div> -->
         </div>
 
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script type="text/javascript" src="js/master.js"></script>
+
         <!-- <script type="text/javascript" src="js/script.js"></script> -->
     </body>
 </html>
